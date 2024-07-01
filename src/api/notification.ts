@@ -44,7 +44,7 @@ export const reqSendPush = async (args: NotificationMessage) => {
 
   await axios.request({
     method: 'POST',
-    url: window?.location?.origin + '/api/fcm',
+    url: window?.location?.origin + '/api',
     data: { message },
   });
 };
