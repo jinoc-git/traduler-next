@@ -2,15 +2,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FB_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGE_ID,
-  appId: process.env.NEXT_PUBLIC_FB_APP_ID,
+  apiKey: 'AIzaSyCYVFKDq52Ndq_OyXbRbvwBn-49cQZ3ij4',
+  authDomain: 'traduler.firebaseapp.com',
+  projectId: 'traduler',
+  storageBucket: 'traduler.appspot.com',
+  messagingSenderId: '136663781474',
+  appId: '1:136663781474:web:a2288251716d0d81ca413b',
 });
-
-const messaging = firebase.messaging();
 
 self.addEventListener('push', (event) => {
   if (event.data) {
