@@ -12,7 +12,7 @@ firebase.initializeApp({
 
 self.addEventListener('push', (event) => {
   if (event.data) {
-    const data = event.data.json();
+    const data = event.data.json().data;
     const options = {
       body: data.body,
       icon: '/images/android/android-launchericon-192-192.png',
