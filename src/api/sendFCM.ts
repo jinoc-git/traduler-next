@@ -14,7 +14,7 @@ export interface NotificationData {
 export const sendFCMNotification = async (data: NotificationData) => {
   const serviceAccount: ServiceAccount = {
     projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-    privateKey: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY,
+    privateKey: process.env.NEXT_PUBLIC_FB_PRIVATE_KEY,
     clientEmail: process.env.NEXT_PUBLIC_CLIENT_EMAIL,
   };
 
