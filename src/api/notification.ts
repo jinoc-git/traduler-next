@@ -42,9 +42,5 @@ export const reqSendPush = async (args: NotificationMessage) => {
     token,
   };
 
-  await axios.request({
-    method: 'POST',
-    url: window?.location?.origin + '/api',
-    data: { message },
-  });
+  await axios.post(window?.location?.origin + '/api', message);
 };
