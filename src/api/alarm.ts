@@ -16,6 +16,7 @@ export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
     if (!hasAlarm) checkedData.push(data);
 
     const targetNotificationToken = await getTargetUserNotificationToken(data.invite_to);
+    console.log(targetNotificationToken);
     if (targetNotificationToken) {
       const message: NotificationMessage = {
         title: '여행 초대 알림',
