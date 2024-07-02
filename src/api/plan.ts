@@ -1,10 +1,14 @@
-import { getUserInfoWithIdList, supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
+
+import { getUserInfoWithIdList } from './auth';
 import { deleteBookMarkByUserAndPlanId } from './bookMark';
 import { addPins, updatePins } from './pins';
 import { addNewPlanMates, updateMates } from './planMate';
 
 import type { AddPlanObj, PlanStatus, QuitPlanArgs, UpdatePlanObj } from '@/types/aboutPlan.type';
 import type { PlanType } from '@/types/supabase';
+
+const supabaseClientClient = createClientFromClient();
 
 export const getPlanList = async (planIds: string[]) => {
   const { data, error } = await supabaseClientClient

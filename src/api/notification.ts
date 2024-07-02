@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
+
+const supabaseClientClient = createClientFromClient();
 
 export const savaNotificationToken = async (userId: string, token: string) => {
   const { error } = await supabaseClientClient

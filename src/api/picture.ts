@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
+
+const supabaseClientClient = createClientFromClient();
 
 export const addPictures = async (fileList: File[], planId: string) => {
   const pathList: string[] = [];

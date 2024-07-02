@@ -1,6 +1,8 @@
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
 
 import type { InsertBookMarkType } from '@/types/supabase';
+
+const supabaseClientClient = createClientFromClient();
 
 export const getBookMarkDataByUserId = async (userId: string | undefined) => {
   if (userId === undefined) return null;

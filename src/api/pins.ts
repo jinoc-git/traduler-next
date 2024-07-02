@@ -1,4 +1,4 @@
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
 
 import type {
   InsertPlanType,
@@ -7,6 +7,8 @@ import type {
   PinType,
   PinUpdateType,
 } from '@/types/supabase';
+
+const supabaseClientClient = createClientFromClient();
 
 export const getAllPinsByIdAndDates = async ([planId, dates]: [string, string[]]) => {
   const { data, error } = await supabaseClientClient
