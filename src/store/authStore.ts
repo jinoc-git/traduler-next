@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { supabaseClientClient } from '@/api/auth';
+import { createClientFromClient } from '@/utils/supabase/client';
 
 import type { UserType } from '@/types/supabase';
 
@@ -19,6 +19,8 @@ export const authStore = create<Store>((set, get) => ({
   user: null,
   actions: {
     authObserver: () => {
+      const supabaseClientClient = createClientFromClient();
+
       supabaseClientClient.auth.onAuthStateChange((event, session) => {
         const currentUser = get().user;
         if (session !== null && currentUser === null) {

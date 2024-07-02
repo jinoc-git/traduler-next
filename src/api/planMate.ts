@@ -1,6 +1,10 @@
-import { getUserInfoWithId, supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
+
+import { getUserInfoWithId } from './auth';
 
 import type { PlanMatesType, UserType } from '@/types/supabase';
+
+const supabaseClientClient = createClientFromClient();
 
 export const findUsers = async (input: string) => {
   const { data: nickname, error: nicknameError } = await supabaseClientClient

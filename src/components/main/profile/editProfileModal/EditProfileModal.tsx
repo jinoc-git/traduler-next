@@ -11,7 +11,6 @@ import Image from 'next/image';
 import {
   checkUserNickname,
   deleteUserProfileImg,
-  supabaseClientClient,
   updateUserNickname,
   updateUserProfileImage,
   uploadProfileImg,
@@ -21,6 +20,7 @@ import ModalLayout from '@/components/common/layout/ModalLayout';
 import useUserInfoMutation from '@/hooks/useUserInfoMutation';
 import { editProfileSchema } from '@/schema/editProfileSchema';
 import { useAuthStoreActions, useAuthStoreState } from '@/store/authStore';
+import { createClientFromClient } from '@/utils/supabase/client';
 
 import type { ModalProps } from '@/components/common/layout/ModalLayout';
 import type { EditProfile } from '@/schema/editProfileSchema';
@@ -70,7 +70,7 @@ const EditProfileModal = ({ isAnimate, handleCloseModal, modalBGRef, onClickModa
         }
         if (isRemoveAvartar) await deleteUserProfileImg(user.id);
 
-        const { data, error } = await supabaseClientClient.auth.refreshSession();
+        const { data, error } = await createClientFromClient().auth.refreshSession();
         if (error || data.user === null) throw new Error('세션 초기화 오류');
 
         const {

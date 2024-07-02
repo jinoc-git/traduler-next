@@ -1,14 +1,11 @@
-const withPWA = require('@ducanh2912/next-pwa').default({
+const withPWA = require('next-pwa')({
   dest: 'public',
   customWorkerSrc: '/firebase-messaging-sw.js',
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
+  skipWaiting: true,
   reloadOnOnline: true,
-  swcMinify: true,
   disable: process.env.NODE_ENV === 'development',
-  workboxOptions: {
-    disableDevLogs: true,
-  },
 });
 
 /** @type {import('next').NextConfig} */

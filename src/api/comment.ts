@@ -1,6 +1,7 @@
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
 
 import type { InsertCommentsType } from '@/types/supabase';
+const supabaseClientClient = createClientFromClient();
 
 export const addComment = async (newComment: InsertCommentsType) => {
   const { error } = await supabaseClientClient.from('comments').insert(newComment);

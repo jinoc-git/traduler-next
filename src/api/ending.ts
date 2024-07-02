@@ -1,11 +1,13 @@
 import { addCommas } from '@/utils/numberFormat';
+import { createClientFromClient } from '@/utils/supabase/client';
 
-import { supabaseClientClient } from './auth';
 import { getPath } from './path';
 import { getAllPinsByIdAndDates } from './pins';
 import { getPlanDate } from './plan';
 
 import type { Distance, EndingPlanType, PinContentsType } from '@/types/supabase';
+
+const supabaseClientClient = createClientFromClient();
 
 export const calcAllPath = async (allPinsContent: PinContentsType[][]) => {
   const distanceArr: Distance = [];

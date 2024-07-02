@@ -1,4 +1,5 @@
-import { supabaseClientClient } from './auth';
+import { createClientFromClient } from '@/utils/supabase/client';
+
 import { getTargetUserNotificationToken, reqSendPush } from './notification';
 
 import type { NotificationMessage } from './notification';
@@ -6,6 +7,8 @@ import type { AlarmCallbackFunc } from '@/types/aboutAlarm.type';
 import type { InsertInviteAlarmType } from '@/types/supabase';
 
 export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
+  const supabaseClientClient = createClientFromClient();
+
   const checkedData: InsertInviteAlarmType[] = [];
 
   for (let data of datas) {
@@ -33,6 +36,8 @@ export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
 };
 
 export const getUserUnConfirmedAlarm = async (data: InsertInviteAlarmType) => {
+  const supabaseClientClient = createClientFromClient();
+
   const { data: alarms, error } = await supabaseClientClient
     .from('invite_alarm')
     .select()
@@ -50,6 +55,7 @@ export const getUserUnConfirmedAlarm = async (data: InsertInviteAlarmType) => {
 
 export const getUserUnConfirmedAlarmList = async (userId: string | undefined) => {
   if (!userId) return null;
+  const supabaseClientClient = createClientFromClient();
 
   const { data, error } = await supabaseClientClient
     .from('invite_alarm')
@@ -64,6 +70,8 @@ export const getUserUnConfirmedAlarmList = async (userId: string | undefined) =>
 };
 
 export const confirmAlarm = async (alarmId: string) => {
+  const supabaseClientClient = createClientFromClient();
+
   const { error } = await supabaseClientClient
     .from('invite_alarm')
     .update({ isChecked: true })
@@ -74,6 +82,8 @@ export const confirmAlarm = async (alarmId: string) => {
 };
 
 export const userAlarmListener = (userId: string, callback: AlarmCallbackFunc) => {
+  const supabaseClientClient = createClientFromClient();
+
   supabaseClientClient
     .channel('invite_alarm')
     .on(
