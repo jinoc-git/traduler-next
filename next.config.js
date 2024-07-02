@@ -1,7 +1,6 @@
-const withPWA = require('next-pwa')({
+const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
-  customWorkerDir: '../',
-  sw: '/firebase-messaging-sw.js',
+  customWorkerSrc: '/firebase-messaging-sw.js',
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
