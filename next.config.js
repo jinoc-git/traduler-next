@@ -2,8 +2,6 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   sw: '/firebase-messaging-sw.js',
   register: true,
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
   skipWaiting: true,
   reloadOnOnline: true,
   disable: process.env.NODE_ENV === 'development',
