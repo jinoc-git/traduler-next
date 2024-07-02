@@ -10,19 +10,22 @@ firebase.initializeApp({
   appId: '1:136663781474:web:a2288251716d0d81ca413b',
 });
 
-const messaging = firebase.messaging();
+self.addEventListener('push', (event) => {
+  if (event.data) {
+    const data = event.data.json().data;
+    const options = {
+      body: data.body,
+      icon: '/images/android/android-launchericon-192-192.png',
+      image: '/images/android/android-launchericon-192-192.png',
+      data: {
+        click_action: data.click_action,
+      },
+    };
 
-messaging.onBackgroundMessage(function ({ data }) {
-  if (data === undefined) return;
-
-  self.registration.showNotification(data.title, {
-    body: data.body,
-    icon: '/images/android/android-launchericon-192-192.png',
-    image: '/images/android/android-launchericon-192-192.png',
-    data: {
-      click_action: data.click_action,
-    },
-  });
+    event.waitUntil(self.registration.showNotification(data.title, options));
+  } else {
+    console.log('This push event has no data.');
+  }
 });
 
 self.addEventListener('notificationclick', (event) => {
@@ -46,20 +49,17 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// self.addEventListener('push', (event) => {
-//   if (event.data) {
-//     const data = event.data.json().data;
-//     const options = {
-//       body: data.body,
-//       icon: '/images/android/android-launchericon-192-192.png',
-//       image: '/images/android/android-launchericon-192-192.png',
-//       data: {
-//         click_action: data.click_action,
-//       },
-//     };
+// const messaging = firebase.messaging();
 
-//     event.waitUntil(self.registration.showNotification(data.title, options));
-//   } else {
-//     console.log('This push event has no data.');
-//   }
+// messaging.onBackgroundMessage(function ({ data }) {
+//   if (data === undefined) return;
+
+//   self.registration.showNotification(data.title, {
+//     body: data.body,
+//     icon: '/images/android/android-launchericon-192-192.png',
+//     image: '/images/android/android-launchericon-192-192.png',
+//     data: {
+//       click_action: data.click_action,
+//     },
+//   });
 // });

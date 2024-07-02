@@ -1,10 +1,9 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
-  customWorkerDir: '..',
+  customWorkerDir: '../',
   sw: '/firebase-messaging-sw.js',
   register: true,
   skipWaiting: true,
-  reloadOnOnline: true,
   disable: process.env.NODE_ENV === 'development',
 });
 
@@ -33,10 +32,6 @@ const nextConfig = {
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
         use: ['@svgr/webpack'],
       },
-      // {
-      //   test: /\.wasm$/,
-      //   type: 'webassembly/async',
-      // },
     );
 
     fileLoaderRule.exclude = /\.svg$/i;
