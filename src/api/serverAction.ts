@@ -5,22 +5,23 @@ import { cookies } from 'next/headers';
 
 import type { Database, EndingPlanType, PlanType } from '@/types/supabase';
 
-const supabaseServerClient = createServerClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    cookies: {
-      getAll() {
-        return cookies().getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => cookies().set(name, value, options));
+export const getSessionFromServer = async () => {
+  const cookieStore = cookies();
+  const supabaseServerClient = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
       },
     },
-  },
-);
+  );
 
-export const getSessionFromServer = async () => {
   const {
     data: { session },
     error,
@@ -32,6 +33,22 @@ export const getSessionFromServer = async () => {
 };
 
 export const getPlanByIdFromServer = async (planId: string) => {
+  const cookieStore = cookies();
+  const supabaseServerClient = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
+      },
+    },
+  );
+
   const { data, error } = await supabaseServerClient
     .from('plans')
     .select()
@@ -44,6 +61,22 @@ export const getPlanByIdFromServer = async (planId: string) => {
 };
 
 export const getAllPinsByPlanFromServer = async (plan: PlanType | EndingPlanType) => {
+  const cookieStore = cookies();
+  const supabaseServerClient = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
+      },
+    },
+  );
+
   const { data, error } = await supabaseServerClient
     .from('pins')
     .select()
@@ -57,6 +90,22 @@ export const getAllPinsByPlanFromServer = async (plan: PlanType | EndingPlanType
 };
 
 export const getEndingPlanFromServer = cache(async (planId: string) => {
+  const cookieStore = cookies();
+  const supabaseServerClient = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
+      },
+    },
+  );
+
   const { data, error } = await supabaseServerClient
     .from('plans_ending')
     .select()
