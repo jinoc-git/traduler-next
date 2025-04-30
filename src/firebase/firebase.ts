@@ -15,12 +15,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
 
 export const getNotificationToken = async (userId: string) => {
-  const messaging = getMessaging(app);
-
   try {
-    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+    const registration = await navigator.serviceWorker.getRegistration('/');
+    if (!registration) throw new Error('토큰 발급 오류');
+
+    const token = await getToken(messaging, {
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: registration,
+    });
 
     const tokenData = { token, update_at: new Date() };
     await savaNotificationToken(userId, tokenData);
