@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
 
 firebase.initializeApp({
   apiKey: 'AIzaSyCYVFKDq52Ndq_OyXbRbvwBn-49cQZ3ij4',
@@ -11,22 +11,32 @@ firebase.initializeApp({
 });
 
 self.addEventListener('push', (event) => {
-  if (event.data) {
-    const data = event.data.json().data;
-
-    const options = {
-      body: data.body,
-      icon: '/images/android/android-launchericon-144-144.png',
-      image: '/images/android/android-launchericon-144-144.png',
-      data: {
-        click_action: data.click_action,
-      },
-    };
-
-    event.waitUntil(self.registration.showNotification(data.title, options));
-  } else {
-    console.log('This push event has no data.');
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch (error) {
+    console.error('Push data parsing error:', error);
+    return;
   }
+
+  const { notification, data } = payload;
+  if (!notification) {
+    console.log('No notification data in push event');
+    return;
+  }
+
+  const options = {
+    body: notification.body || 'No body',
+    icon: notification.icon || '/images/android/android-launchericon-144-144.png',
+    image: notification.image || '/images/android/android-launchericon-144-144.png',
+    data: {
+      click_action: data?.click_action || '/',
+    },
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(notification.title || 'Notification', options),
+  );
 });
 
 self.addEventListener('notificationclick', (event) => {

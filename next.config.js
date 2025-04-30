@@ -1,10 +1,4 @@
-const withPWA = require('@ducanh2912/next-pwa').default({
-  dest: 'public',
-  customWorkerSrc: '/firebase-messaging-sw.js',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-});
+const withSerwistInit = require('@serwist/next');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -55,5 +49,18 @@ const nextConfig = {
     return config;
   },
 };
+
+const isProd = process.env.NODE_ENV === 'production';
+const noWrapper = (config) => config;
+// const revision = crypto.randomUUID();
+
+const serwistConfig = {
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+  // cacheOnNavigation: true,
+  // additionalPrecacheEntries: [{ url: '/~offline', revision }],
+};
+
+const withPWA = isProd ? withSerwistInit(serwistConfig) : noWrapper;
 
 module.exports = withPWA(nextConfig);
