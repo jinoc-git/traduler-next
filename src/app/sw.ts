@@ -57,7 +57,7 @@ self.addEventListener('push', (event) => {
         self.registration.showNotification(notification.title || 'Notification', {
           body: notification.body || 'New message',
           icon: notification.icon || '/icon-192x192.png',
-          data: { url: payload.data?.click_action || '/' },
+          data: { click_action: payload.data?.click_action || '/' },
         }),
       );
     }
