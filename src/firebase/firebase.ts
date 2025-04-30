@@ -15,9 +15,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
 
 export const getNotificationToken = async (userId: string) => {
+  const messaging = getMessaging(app);
+
   try {
     const registration = await navigator.serviceWorker.getRegistration('/');
     if (!registration) throw new Error('토큰 발급 오류');

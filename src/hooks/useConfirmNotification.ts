@@ -21,9 +21,11 @@ const useConfirmNotification = (userId: string | undefined) => {
       return;
     }
 
-    const registration = await navigator.serviceWorker.getRegistration('/');
-    if (!registration) {
-      await navigator.serviceWorker.register('/sw.js');
+    if (process.env.NODE_ENV === 'production') {
+      const registration = await navigator.serviceWorker.getRegistration('/');
+      if (!registration) {
+        await navigator.serviceWorker.register('/sw.js');
+      }
     }
 
     const targetData = await getTargetUserNotificationToken(userId);

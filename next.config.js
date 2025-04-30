@@ -1,4 +1,4 @@
-const withSerwistInit = require('@serwist/next');
+const withSerwistInit = require('@serwist/next').default;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
