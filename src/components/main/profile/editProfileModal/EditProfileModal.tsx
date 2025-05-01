@@ -166,7 +166,6 @@ const EditProfileModal = ({ isAnimate, handleCloseModal, modalBGRef, onClickModa
             alt="프로필 아이콘"
             width={200}
             height={200}
-            unoptimized
             className="w-[30px] h-[30px] md:block sm:hidden rounded-full border border-gray"
           />
           <p className="font-semibold md:text-xlg sm:text-lg text-gray_dark_2">프로필 편집</p>
