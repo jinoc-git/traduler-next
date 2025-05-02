@@ -1,20 +1,17 @@
 import { defaultCache } from '@serwist/next/worker';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
 import { Serwist } from 'serwist';
 
-import type { Message } from 'firebase-admin/messaging';
 import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
     __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
-    firebase: any;
   }
 }
 
 declare const self: ServiceWorkerGlobalScope;
-
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js');
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -25,8 +22,8 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FB_APP_ID,
 };
 
-const firebaseApp = self.firebase.initializeApp(firebaseConfig);
-const messaging = self.firebase.messaging();
+const firebaseApp = initializeApp(firebaseConfig);
+const messaging = getMessaging(firebaseApp);
 
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
@@ -39,7 +36,7 @@ const serwist = new Serwist({
 
 serwist.addEventListeners();
 
-messaging.onBackgroundMessage((payload: Message) => {
+onBackgroundMessage(messaging, (payload) => {
   console.log('백그라운드 메시지 수신:', payload);
   const { notification, data } = payload;
 
