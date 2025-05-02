@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
 
     const serviceAccount: ServiceAccount = {
       projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-      privateKey: process.env.NEXT_PUBLIC_FB_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      privateKey: process.env.FB_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       clientEmail: process.env.NEXT_PUBLIC_CLIENT_EMAIL,
     };
 
@@ -20,8 +20,8 @@ export const POST = async (req: NextRequest) => {
 
     await admin.messaging().send(message);
 
-    return NextResponse.json(message, { status: 200 });
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    return console.error('Error sending notification:', error);
+    return NextResponse.json({ error: 'Failed to send notification' }, { status: 500 });
   }
 };
