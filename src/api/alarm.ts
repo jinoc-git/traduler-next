@@ -20,13 +20,32 @@ export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
     if (targeTokenData) {
       const { token } = targeTokenData;
 
+      // const message: Message = {
+      //   data: {
+      //     title: '여행 초대 알림',
+      //     body: `${data.from_nickname}님이 ${data.plan_title}에 초대했습니다.`,
+      //     click_action: `${window?.location?.origin}/plan/${data.invite_planId}`,
+      //   },
+      //   token,
+      // };
+
       const message: Message = {
-        data: {
+        token,
+        notification: {
           title: '여행 초대 알림',
           body: `${data.from_nickname}님이 ${data.plan_title}에 초대했습니다.`,
+        },
+        data: {
           click_action: `${window?.location?.origin}/plan/${data.invite_planId}`,
         },
-        token,
+        webpush: {
+          headers: {
+            TTL: '3600',
+          },
+          notification: {
+            icon: '/images/android/android-launchericon-144-144.png',
+          },
+        },
       };
 
       await reqSendPush(message);

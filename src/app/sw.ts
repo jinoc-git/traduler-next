@@ -50,14 +50,19 @@ self.addEventListener('push', (event) => {
 
   try {
     const payload = event.data.json();
-    const { notification } = payload;
+    const { notification, data } = payload;
+
+    const title = notification?.title || data?.title;
+    const body = notification?.body || data?.body;
+    const icon = '/images/android/android-launchericon-144-144.png';
+    const clickAction = data?.click_action || '/';
 
     if (notification) {
       event.waitUntil(
-        self.registration.showNotification(notification.title || 'Notification', {
-          body: notification.body || 'New message',
-          icon: notification.icon || '/icon-192x192.png',
-          data: { click_action: payload.data?.click_action || '/' },
+        self.registration.showNotification(title, {
+          body,
+          icon,
+          data: { click_action: clickAction },
         }),
       );
     }
