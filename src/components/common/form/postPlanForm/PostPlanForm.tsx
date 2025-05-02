@@ -97,9 +97,10 @@ export default function PostPlanForm(props: Props) {
       await addPlan(addPlanData);
 
       const alarmData = changeToAlarmData({ currentUser: user, plan: newPlan, invitedUser });
-      await addInviteAlarmList(alarmData);
 
       toast.success('여행이 생성됐습니다.');
+
+      await addInviteAlarmList(alarmData);
       router.push('main');
     } else {
       const updatedPlan: InsertPlanType = {
@@ -128,12 +129,12 @@ export default function PostPlanForm(props: Props) {
         oldUser: oldInvitedUser,
       });
 
-      await addInviteAlarmList(alarmData);
-
       pinMutate([plan.id, plan.dates]);
       setReadOnly();
       syncInvitedUser();
       toast.success('여행이 수정됐습니다.');
+
+      await addInviteAlarmList(alarmData);
     }
   };
 

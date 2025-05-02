@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { getNotificationToken } from '@/firebase/firebase';
 import { is30DaysPast } from '@/utils/aboutDay';
@@ -36,7 +36,14 @@ export const getTargetUserNotificationToken = async (userId: string) => {
 };
 
 export const reqSendPush = async (args: Message) => {
-  await axios.post(window?.location?.origin + '/api/push', args);
+  try {
+    await axios.post(window?.location?.origin + '/api/push', args);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const errorUserId = error.response?.data.invited_user_id as string | undefined;
+      await deleteTargetUserToken(errorUserId);
+    }
+  }
 };
 
 export const checkTokenTime = async (userId: string, tokenData: UserTokenData) => {
@@ -51,4 +58,15 @@ export const checkTokenTime = async (userId: string, tokenData: UserTokenData) =
   }
 
   return null;
+};
+
+const deleteTargetUserToken = async (targetId: string | undefined) => {
+  if (!targetId) return;
+
+  const { error } = await supabaseClientClient
+    .from('users')
+    .update({ push_notification: null })
+    .eq('id', targetId);
+
+  if (error) throw new Error('오류 푸시 알림 토큰 삭제 오류');
 };
