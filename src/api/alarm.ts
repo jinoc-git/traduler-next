@@ -38,14 +38,6 @@ export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
         data: {
           click_action: `${window?.location?.origin}/plan/${data.invite_planId}`,
         },
-        webpush: {
-          headers: {
-            TTL: '3600',
-          },
-          notification: {
-            icon: '/images/android/android-launchericon-144-144.png',
-          },
-        },
       };
 
       await reqSendPush(message);

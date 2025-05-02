@@ -1,6 +1,7 @@
 import { defaultCache } from '@serwist/next/worker';
 import { Serwist } from 'serwist';
 
+import type { Message } from 'firebase-admin/messaging';
 import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
 
 declare global {
@@ -24,14 +25,8 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FB_APP_ID,
 };
 
-try {
-  // @ts-ignore: Firebase types not fully compatible with ServiceWorker
-  const firebaseApp = self.firebase.initializeApp(firebaseConfig);
-  const messaging = self.firebase.messaging();
-  console.log('Firebase initialized in Service Worker');
-} catch (error) {
-  console.error('Firebase initialization error:', error);
-}
+const firebaseApp = self.firebase.initializeApp(firebaseConfig);
+const messaging = self.firebase.messaging();
 
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
@@ -44,32 +39,56 @@ const serwist = new Serwist({
 
 serwist.addEventListeners();
 
-self.addEventListener('push', (event) => {
-  console.log('Push event received:', event.data?.text());
-  if (!event.data) return;
+messaging.onBackgroundMessage((payload: Message) => {
+  console.log('백그라운드 메시지 수신:', payload);
+  const { notification, data } = payload;
 
-  try {
-    const payload = event.data.json();
-    const { notification, data } = payload;
+  const title = notification?.title || '여행 초대 알림';
+  const body = notification?.body || data?.body;
+  const icon = '/images/android/android-launchericon-144-144.png';
+  const badge = '/images/android/android-launchericon-72-72.png';
+  const clickAction = data?.click_action || '/';
 
-    const title = notification?.title || data?.title;
-    const body = notification?.body || data?.body;
-    const icon = '/images/android/android-launchericon-144-144.png';
-    const clickAction = data?.click_action || '/';
+  const notificationOptions = {
+    body,
+    icon,
+    badge,
+    data: { click_action: clickAction },
+  };
 
-    if (notification) {
-      event.waitUntil(
-        self.registration.showNotification(title, {
-          body,
-          icon,
-          data: { click_action: clickAction },
-        }),
-      );
-    }
-  } catch (error) {
-    console.error('Push event error:', error);
-  }
+  return self.registration.showNotification(title, notificationOptions);
 });
+
+// self.addEventListener('push', (event) => {
+//   console.log('Push event received:', event.data?.text());
+//   if (!event.data) return;
+
+//   try {
+//     const payload = event.data.json();
+//     const { notification, data } = payload;
+
+//     const title = notification?.title || data?.title;
+//     const body = notification?.body || data?.body;
+//     const image = '/images/android/android-launchericon-144-144.png';
+//     const icon = '/images/android/android-launchericon-72-72.png';
+//     const clickAction = data?.click_action || '/';
+
+//     const options = {
+//       body,
+//       image,
+//       icon,
+//       data: {
+//         click_action: clickAction,
+//       },
+//     };
+
+//     if (notification) {
+//       event.waitUntil(self.registration.showNotification(title, options));
+//     }
+//   } catch (error) {
+//     console.error('Push event error:', error);
+//   }
+// });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
