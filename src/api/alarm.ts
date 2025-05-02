@@ -37,6 +37,7 @@ export const addInviteAlarmList = async (datas: InsertInviteAlarmType[]) => {
         },
         data: {
           click_action: `${window?.location?.origin}/plan/${data.invite_planId}`,
+          invited_user_id: data.invite_to,
         },
       };
 
